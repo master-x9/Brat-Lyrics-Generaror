@@ -1,6 +1,6 @@
 # 🟢 BRAT Lyric Video Generator
 Generate lyric videos with the iconic **Charli XCX "Brat"** album aesthetic — lime green background, lo-fi compressed text, all lowercase.
-![Brat Aesthetic](https://upload.wikimedia.org/wikipedia/en/b/b9/Charli_XCX_-_Brat.png)
+![Brat Aesthetic]([https://upload.wikimedia.org/wikipedia/en/b/b9/Charli_XCX_-_Brat.png](https://imgs.search.brave.com/FbIrAXumkqD6LgrqdN1x_5Y7HUd-HxsEp5kpCypl4js/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi82LzYwL0No/YXJsaV9YQ1hfLV9C/cmF0XyUyOGFsYnVt/X2NvdmVyJTI5LnBu/Zy81MTJweC1DaGFy/bGlfWENYXy1fQnJh/dF8lMjhhbGJ1bV9j/b3ZlciUyOS5wbmc))
 ## Quick Start
 ```bash
 # 1. Install dependencies
