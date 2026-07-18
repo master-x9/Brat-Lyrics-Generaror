@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>brat lyric video generator</title>
+    <meta name="description" content="Generate Charli XCX Brat-aesthetic lyric videos with synced timestamps, lo-fi text effects, and NLE-ready exports.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238ACE00'/><text y='.9em' font-size='80' x='10'>b</text></svg>">
+</head>
+<body>
+    <!-- ============================================================= -->
+    <!-- NOISE OVERLAY — Adds subtle grain texture across entire page   -->
+    <!-- ============================================================= -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- ============================================================= -->
+    <!-- HEADER — Brat logo and tagline                                 -->
+    <!-- ============================================================= -->
+    <header class="header" id="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                <span class="header__logo-text">brat</span>
+                <span class="header__logo-dot"></span>
+            </div>
+            <p class="header__tagline">lyric video generator</p>
+        </div>
+    </header>
+
+    <!-- ============================================================= -->
+    <!-- MAIN APPLICATION                                               -->
+    <!-- ============================================================= -->
+    <main class="app" id="app">
+
+        <!-- ========================================================= -->
+        <!-- STEP 1: FILE UPLOAD                                        -->
+        <!-- ========================================================= -->
+        <section class="step step--active" id="step-upload" data-step="1">
+            <div class="step__header">
+                <span class="step__number">01</span>
+                <h2 class="step__title">drop your files</h2>
+            </div>
+
+            <div class="upload-grid">
+                <!-- Audio Upload -->
+                <div class="dropzone" id="dropzone-audio" tabindex="0" role="button" aria-label="Upload audio file">
+                    <div class="dropzone__icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                    <p class="dropzone__label">audio file</p>
+                    <p class="dropzone__hint">.mp3, .wav, .m4a, .flac</p>
+                    <p class="dropzone__file" id="audio-filename"></p>
+                    <input type="file" id="input-audio" accept=".mp3,.wav,.m4a,.aac,.ogg,.flac" hidden>
+                </div>
+
+                <!-- Lyrics Upload -->
+                <div class="dropzone" id="dropzone-lyrics" tabindex="0" role="button" aria-label="Upload lyrics file">
+                    <div class="dropzone__icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
+                        </svg>
+                    </div>
+                    <p class="dropzone__label">lyrics file</p>
+                    <p class="dropzone__hint">[optional] srt/lrc, or auto-transcribe</p>
+                    <p class="dropzone__file" id="lyrics-filename"></p>
+                    <input type="file" id="input-lyrics" accept=".srt,.lrc" hidden>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- STEP 2: CONFIGURATION                                      -->
+        <!-- ========================================================= -->
+        <section class="step" id="step-config" data-step="2">
+            <div class="step__header">
+                <span class="step__number">02</span>
+                <h2 class="step__title">configure output</h2>
+            </div>
+
+            <div class="config-grid">
+                <!-- Output Mode -->
+                <div class="config-group">
+                    <label class="config-label">output mode</label>
+                    <div class="mode-selector" id="mode-selector">
+                        <button class="mode-btn mode-btn--active" data-mode="both" id="mode-both">
+                            <span class="mode-btn__icon">⚡</span>
+                            <span class="mode-btn__title">both</span>
+                            <span class="mode-btn__desc">mp4 + nle assets</span>
+                        </button>
+                        <button class="mode-btn" data-mode="video" id="mode-video">
+                            <span class="mode-btn__icon">🎬</span>
+                            <span class="mode-btn__title">video only</span>
+                            <span class="mode-btn__desc">synced .mp4 file</span>
+                        </button>
+                        <button class="mode-btn" data-mode="nle" id="mode-nle">
+                            <span class="mode-btn__icon">✂️</span>
+                            <span class="mode-btn__title">nle export</span>
+                            <span class="mode-btn__desc">png + fcpxml + edl</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sliders Row -->
+                <div class="config-row">
+                    <div class="config-group config-group--half">
+                        <label class="config-label" for="slider-fps">frame rate</label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="slider-fps" class="slider" min="24" max="60" value="30" step="1">
+                            <div class="slider-value" id="fps-value">30 fps</div>
+                        </div>
+                    </div>
+                    <div class="config-group config-group--half">
+                        <label class="config-label" for="slider-fontsize">text size</label>
+                        <div class="slider-wrapper">
+                            <input type="range" id="slider-fontsize" class="slider" min="40" max="160" value="90" step="5">
+                            <div class="slider-value" id="fontsize-value">90 px</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="config-group">
+                    <label class="config-label">live preview</label>
+                    <div class="preview-card" id="preview-card">
+                        <div class="preview-frame" id="preview-frame">
+                            <div class="preview-text" id="preview-text">brat</div>
+                        </div>
+                        <div class="preview-input-row">
+                            <input type="text" id="preview-input" class="preview-input" value="brat" placeholder="type any text to preview..." maxlength="100">
+                            <button class="preview-btn" id="preview-btn" title="Refresh preview">↻</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- GENERATE BUTTON                                            -->
+        <!-- ========================================================= -->
+        <div class="generate-section" id="generate-section">
+            <button class="generate-btn" id="generate-btn" disabled>
+                <span class="generate-btn__text">generate</span>
+                <span class="generate-btn__arrow">→</span>
+            </button>
+            <p class="generate-hint" id="generate-hint">upload both files to start</p>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- STEP 3: PROGRESS                                           -->
+        <!-- ========================================================= -->
+        <section class="step" id="step-progress" data-step="3" style="display:none;">
+            <div class="step__header">
+                <span class="step__number">03</span>
+                <h2 class="step__title">generating...</h2>
+            </div>
+
+            <div class="progress-card" id="progress-card">
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="progress-info">
+                    <span class="progress-percent" id="progress-percent">0%</span>
+                    <span class="progress-message" id="progress-message">starting...</span>
+                </div>
+                <div class="progress-spinner" id="progress-spinner">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- STEP 4: RESULTS                                            -->
+        <!-- ========================================================= -->
+        <section class="step" id="step-results" data-step="4" style="display:none;">
+            <div class="step__header">
+                <span class="step__number">04</span>
+                <h2 class="step__title">your assets are ready</h2>
+            </div>
+
+            <div class="results-grid" id="results-grid">
+                <!-- Preview -->
+                <div class="result-preview" id="result-preview">
+                    <img id="result-preview-img" src="" alt="Generated preview frame">
+                </div>
+
+                <!-- Download Cards -->
+                <div class="result-downloads" id="result-downloads">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- NLE Instructions -->
+            <div class="nle-instructions" id="nle-instructions" style="display:none;">
+                <h3 class="nle-instructions__title">nle import guide</h3>
+                <div class="nle-cards">
+                    <div class="nle-card">
+                        <span class="nle-card__app">davinci resolve</span>
+                        <p>file → import → timeline → select <code>brat_timeline.fcpxml</code></p>
+                    </div>
+                    <div class="nle-card">
+                        <span class="nle-card__app">final cut pro</span>
+                        <p>file → import → xml → select <code>brat_timeline.fcpxml</code></p>
+                    </div>
+                    <div class="nle-card">
+                        <span class="nle-card__app">premiere pro</span>
+                        <p>file → import → select <code>brat_timeline.edl</code>, relink pngs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Over -->
+            <button class="reset-btn" id="reset-btn">← start over</button>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ERROR STATE                                                -->
+        <!-- ========================================================= -->
+        <section class="step" id="step-error" style="display:none;">
+            <div class="error-card" id="error-card">
+                <div class="error-icon">✕</div>
+                <h3 class="error-title">something went wrong</h3>
+                <p class="error-message" id="error-message"></p>
+                <button class="reset-btn" id="error-reset-btn">← try again</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================= -->
+    <!-- FOOTER                                                         -->
+    <!-- ============================================================= -->
+    <footer class="footer">
+        <p>built for the brat era • #8ACE00 • 1080×1920 • lo-fi text</p>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
