@@ -4,15 +4,11 @@ Generate lyric videos with the iconic **Charli XCX "Brat"** album aesthetic — 
 ## Quick Start
 ```bash
 # 1. Install dependencies
-pip install moviepy Pillow numpy
+pip3 install moviepy Pillow numpy
 # 2. Ensure ffmpeg is installed
 brew install ffmpeg
-# 3. Generate a full MP4 video
-python brat_lyric_video.py --audio your_song.mp3 --lyrics your_lyrics.srt --mode video
-# 4. Or generate NLE-ready assets for DaVinci Resolve
-python brat_lyric_video.py --audio your_song.mp3 --lyrics your_lyrics.srt --mode nle
-# 5. Or generate both
-python brat_lyric_video.py --audio your_song.mp3 --lyrics your_lyrics.srt --mode both
+# 3. Run the app.py
+pip3 app.py
 ```
 ## Features
 ### 🎬 Two Output Modes
