@@ -8,7 +8,7 @@ pip3 install moviepy Pillow numpy
 # 2. Ensure ffmpeg is installed
 brew install ffmpeg
 # 3. Run the app.py
-pip3 app.py
+python3 app.py
 ```
 ## Features
 ### 🎬 Two Output Modes
