@@ -86,18 +86,6 @@ i guess i'm just that girl
 --font        Override font path                        [default: auto-detect]
 --font-size   Font size in pixels                       [default: 90]
 ```
-## NLE Import Instructions
-### DaVinci Resolve
-1. **File → Import → Timeline**
-2. Select `brat_timeline.fcpxml`
-3. Drag your audio onto the A1 track
-4. The transparent PNG lyric overlays will be perfectly timed
-### Final Cut Pro
-1. **File → Import → XML**
-2. Select `brat_timeline.fcpxml`
-### Adobe Premiere Pro
-1. **File → Import** → select `brat_timeline.edl`
-2. Relink the PNG files from the `png_sequence/` folder
 ## Customization
 Edit the constants at the top of `brat_lyric_video.py`:
 ```python
